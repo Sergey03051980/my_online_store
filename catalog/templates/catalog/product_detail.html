@@ -1,0 +1,109 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}{{ product.name }} - Мой Магазин{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- Хлебные крошки -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'catalog:home' %}">Главная</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'catalog:home' %}">Товары</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ product.name }}</li>
+        </ol>
+    </nav>
+
+    <!-- Карточка товара -->
+    <div class="row">
+        <div class="col-md-6">
+            <!-- Изображение товара -->
+            {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid rounded shadow">
+            {% else %}
+                <div class="bg-light rounded d-flex align-items-center justify-content-center" style="height: 300px;">
+                    <span class="text-muted">Нет изображения</span>
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="col-md-6">
+            <!-- Информация о товаре -->
+            <h1 class="display-5">{{ product.name }}</h1>
+
+            <div class="mb-3">
+                <span class="h3 text-primary">{{ product.price }} ₽</span>
+                {% if product.price < 5000 %}
+                    <span class="badge bg-success ms-2">Выгодно</span>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <span class="badge bg-secondary">{{ product.category.name }}</span>
+            </div>
+
+            <div class="mb-4">
+                <h5>Описание:</h5>
+                <p class="lead">{{ product.description }}</p>
+            </div>
+
+            <!-- Даты создания и обновления -->
+            <div class="text-muted small mb-4">
+                <div>Добавлен: {{ product.created_at|date:"d.m.Y H:i" }}</div>
+                {% if product.updated_at != product.created_at %}
+                    <div>Обновлен: {{ product.updated_at|date:"d.m.Y H:i" }}</div>
+                {% endif %}
+            </div>
+
+            <!-- Кнопки действий -->
+            <div class="d-grid gap-2 d-md-flex">
+                <a href="{% url 'catalog:home' %}" class="btn btn-secondary me-md-2">
+                    ← Назад к товарам
+                </a>
+                <button class="btn btn-primary">
+                    🛒 Добавить в корзину
+                </button>
+                <a href="{% url 'catalog:product_delete' product.pk %}" class="btn btn-danger">
+                    🗑️ Удалить
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Дополнительная информация -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Характеристики</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Категория:</strong> {{ product.category.name }}</p>
+                            <p><strong>Артикул:</strong> #{{ product.pk }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Дата добавления:</strong> {{ product.created_at|date:"d.m.Y" }}</p>
+                            <p><strong>Статус:</strong> В наличии</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .breadcrumb {
+        background-color: transparent;
+        padding: 0;
+    }
+
+    .img-fluid {
+        max-height: 500px;
+        object-fit: cover;
+    }
+</style>
+{% endblock %}

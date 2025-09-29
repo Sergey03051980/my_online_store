@@ -18,8 +18,8 @@ env/
 ENV/
 
 # IDE
-.idea/
-.vscode/
+.idea
+.vscode
 *.swp
 *.swo
 *~
@@ -51,3 +51,6 @@ media/
 # Database migrations (optional - sometimes you want to keep them)
 # */migrations/*.py
 # !*/migrations/__init__.py
+
+
+

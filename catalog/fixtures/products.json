@@ -1,0 +1,41 @@
+[
+{
+  "model": "catalog.product",
+  "pk": 12,
+  "fields": {
+    "name": "Samsung Smartphone",
+    "description": "Flagship smartphone",
+    "image": "",
+    "category": 10,
+    "price": "29999.99",
+    "created_at": "2025-09-17T21:35:17.564Z",
+    "updated_at": "2025-09-17T21:35:17.564Z"
+  }
+},
+{
+  "model": "catalog.product",
+  "pk": 13,
+  "fields": {
+    "name": "Cotton T-Shirt",
+    "description": "Comfortable cotton t-shirt",
+    "image": "",
+    "category": 11,
+    "price": "1999.50",
+    "created_at": "2025-09-17T21:35:17.568Z",
+    "updated_at": "2025-09-17T21:35:17.569Z"
+  }
+},
+{
+  "model": "catalog.product",
+  "pk": 14,
+  "fields": {
+    "name": "Python Book",
+    "description": "Programming textbook",
+    "image": "",
+    "category": 12,
+    "price": "1499.00",
+    "created_at": "2025-09-17T21:35:17.571Z",
+    "updated_at": "2025-09-17T21:35:17.571Z"
+  }
+}
+]

@@ -32,8 +32,8 @@
 
                 <!-- Добавить товар (новая функция) -->
                 <li class="nav-item">
-                    <a class="nav-link {% if request.resolver_match.url_name == 'product_add' %}active{% endif %}"
-                       href="{% url 'catalog:product_add' %}">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'product_create' %}active{% endif %}"
+                       href="{% url 'catalog:product_create' %}">
                         ➕ Добавить товар
                     </a>
                 </li>

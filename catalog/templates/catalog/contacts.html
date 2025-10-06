@@ -1,28 +1,18 @@
 {% extends 'catalog/base.html' %}
 
-{% block title %}Контакты - Мой Магазин{% endblock %}
-
 {% block content %}
 <div class="container mt-4">
-    <!-- Хлебные крошки -->
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{% url 'catalog:home' %}">Главная</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Контакты</li>
-        </ol>
-    </nav>
-
-    <h1>Наши контакты</h1>
-
-    <div class="card mt-3">
-        <div class="card-body">
-            <h5 class="card-title">Контактная информация</h5>
-            <p class="card-text"><strong>Телефон:</strong> +7 (999) 999-99-99</p>
-            <p class="card-text"><strong>Email:</strong> info@myonlinestore.ru</p>
-            <p class="card-text"><strong>Адрес:</strong> г. Москва, ул. Примерная, д. 123</p>
+    <div class="row">
+        <div class="col-12">
+            <h1>Контакты</h1>
+            <p>Свяжитесь с нами:</p>
+            <ul>
+                <li>Телефон: +7 (999) 123-45-67</li>
+                <li>Email: info@myshop.ru</li>
+                <li>Адрес: Москва, ул. Примерная, д. 123</li>
+            </ul>
+            <a href="{% url 'catalog:home' %}" class="btn btn-primary">На главную</a>
         </div>
     </div>
-
-    <a href="{% url 'catalog:home' %}" class="btn btn-secondary mt-3">Вернуться на главную</a>
 </div>
 {% endblock %}

@@ -1,23 +1,39 @@
 {% extends 'catalog/base.html' %}
 
-{% block title %}Добавить товар - Мой Магазин{% endblock %}
-
 {% block content %}
 <div class="container mt-4">
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{% url 'catalog:home' %}">Главная</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Добавить товар</li>
-        </ol>
-    </nav>
-
-    <h2>Добавить новый товар</h2>
-
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Сохранить товар</button>
-        <a href="{% url 'catalog:home' %}" class="btn btn-secondary">Отмена</a>
-    </form>
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card">
+                <div class="card-header">
+                    <h4>{% if object %}Редактирование продукта{% else %}Создание нового продукта{% endif %}</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        {% for field in form %}
+                        <div class="mb-3">
+                            <label for="{{ field.id_for_label }}" class="form-label">
+                                {{ field.label }}
+                            </label>
+                            {{ field }}
+                            {% if field.errors %}
+                            <div class="alert alert-danger mt-1">
+                                {{ field.errors }}
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                        
+                        <button type="submit" class="btn btn-success">
+                            {% if object %}Сохранить{% else %}Создать{% endif %}
+                        </button>
+                        <a href="{% url 'catalog:home' %}" class="btn btn-secondary">Отмена</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

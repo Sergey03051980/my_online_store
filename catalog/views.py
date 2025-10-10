@@ -1,7 +1,8 @@
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView, TemplateView
-from django.shortcuts import get_object_or_404
+from django.views.generic import ListView, DetailView, TemplateView, CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy, reverse
 from .models import Product
+from .forms import ProductForm
 
 
 class ProductListView(ListView):
@@ -9,14 +10,33 @@ class ProductListView(ListView):
     template_name = 'catalog/home.html'
     context_object_name = 'products'
 
-    def get_queryset(self):
-        return Product.objects.all()[:12]  # Ограничиваем 12 товарами
-
 
 class ProductDetailView(DetailView):
     model = Product
     template_name = 'catalog/product_detail.html'
     context_object_name = 'product'
+
+
+class ProductCreateView(CreateView):
+    model = Product
+    form_class = ProductForm
+    template_name = 'catalog/product_form.html'
+    success_url = reverse_lazy('catalog:home')
+
+
+class ProductUpdateView(UpdateView):
+    model = Product
+    form_class = ProductForm
+    template_name = 'catalog/product_form.html'
+
+    def get_success_url(self):
+        return reverse('catalog:product_detail', kwargs={'pk': self.object.pk})
+
+
+class ProductDeleteView(DeleteView):
+    model = Product
+    template_name = 'catalog/product_confirm_delete.html'
+    success_url = reverse_lazy('catalog:home')
 
 
 class ContactsView(TemplateView):

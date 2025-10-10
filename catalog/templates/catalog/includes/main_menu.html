@@ -1,67 +1,50 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-        <!-- Бренд/логотип -->
-        <a class="navbar-brand" href="{% url 'catalog:home' %}">
-            🛍️ Мой Магазин
-        </a>
+        <a class="navbar-brand" href="{% url 'catalog:home' %}">Мой Магазин</a>
 
-        <!-- Кнопка для мобильных устройств -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarNav" aria-controls="navbarNav"
-                aria-expanded="false" aria-label="Переключить навигацию">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <!-- Навигационное меню -->
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto">
-                <!-- Главная -->
                 <li class="nav-item">
                     <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}"
-                       href="{% url 'catalog:home' %}">
-                        🏠 Главная
-                    </a>
+                       href="{% url 'catalog:home' %}">Главная</a>
                 </li>
-
-                <!-- Все товары (если есть отдельная страница) -->
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'catalog:home' %}">
-                        📦 Все товары
-                    </a>
-                </li>
-
-                <!-- Добавить товар (новая функция) -->
                 <li class="nav-item">
                     <a class="nav-link {% if request.resolver_match.url_name == 'product_create' %}active{% endif %}"
-                       href="{% url 'catalog:product_create' %}">
-                        ➕ Добавить товар
-                    </a>
+                       href="{% url 'catalog:product_create' %}">Добавить товар</a>
                 </li>
-
-                <!-- Контакты -->
                 <li class="nav-item">
                     <a class="nav-link {% if request.resolver_match.url_name == 'contacts' %}active{% endif %}"
-                       href="{% url 'catalog:contacts' %}">
-                        📞 Контакты
-                    </a>
+                       href="{% url 'catalog:contacts' %}">Контакты</a>
                 </li>
             </ul>
 
-            <!-- Правая часть меню (поиск, корзина, пользователь) -->
+            <!-- Блок авторизации -->
             <ul class="navbar-nav">
-                <li class="nav-item">
-                    <form class="d-flex me-2" role="search">
-                        <input class="form-control me-2" type="search"
-                               placeholder="Поиск товаров..." aria-label="Search">
-                        <button class="btn btn-outline-light" type="submit">🔍</button>
-                    </form>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        🛒 Корзина <span class="badge bg-secondary">0</span>
-                    </a>
-                </li>
+                {% if user.is_authenticated %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            👤 {{ user.email }}
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><span class="dropdown-item-text">Привет, {{ user.email }}</span></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{% url 'users:logout' %}">🚪 Выйти</a></li>
+                        </ul>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'login' %}active{% endif %}"
+                           href="{% url 'users:login' %}">🔑 Войти</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'register' %}active{% endif %}"
+                           href="{% url 'users:register' %}">📝 Регистрация</a>
+                    </li>
+                {% endif %}
             </ul>
         </div>
     </div>

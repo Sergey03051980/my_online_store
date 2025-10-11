@@ -12,17 +12,20 @@
                     <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}"
                        href="{% url 'catalog:home' %}">Главная</a>
                 </li>
+                
+                {% if user.is_authenticated %}
                 <li class="nav-item">
                     <a class="nav-link {% if request.resolver_match.url_name == 'product_create' %}active{% endif %}"
-                       href="{% url 'catalog:product_create' %}">Добавить товар</a>
+                       href="{% url 'catalog:product_create' %}">➕ Добавить товар</a>
                 </li>
+                {% endif %}
+                
                 <li class="nav-item">
                     <a class="nav-link {% if request.resolver_match.url_name == 'contacts' %}active{% endif %}"
                        href="{% url 'catalog:contacts' %}">Контакты</a>
                 </li>
             </ul>
 
-            <!-- Блок авторизации -->
             <ul class="navbar-nav">
                 {% if user.is_authenticated %}
                     <li class="nav-item dropdown">
@@ -32,17 +35,20 @@
                         <ul class="dropdown-menu">
                             <li><span class="dropdown-item-text">Привет, {{ user.email }}</span></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="{% url 'users:logout' %}">🚪 Выйти</a></li>
+                            <li>
+                                <form method="post" action="{% url 'users:logout' %}" class="d-inline">
+                                    {% csrf_token %}
+                                    <button type="submit" class="dropdown-item border-0 bg-transparent">🚪 Выйти</button>
+                                </form>
+                            </li>
                         </ul>
                     </li>
                 {% else %}
                     <li class="nav-item">
-                        <a class="nav-link {% if request.resolver_match.url_name == 'login' %}active{% endif %}"
-                           href="{% url 'users:login' %}">🔑 Войти</a>
+                        <a class="nav-link" href="{% url 'users:login' %}">🔑 Войти</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if request.resolver_match.url_name == 'register' %}active{% endif %}"
-                           href="{% url 'users:register' %}">📝 Регистрация</a>
+                        <a class="nav-link" href="{% url 'users:register' %}">📝 Регистрация</a>
                     </li>
                 {% endif %}
             </ul>

@@ -48,3 +48,16 @@ class ProductForm(forms.ModelForm):
         if price is not None and price < 0:
             raise ValidationError('Цена не может быть отрицательной')
         return price
+
+
+class ProductForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = ['name', 'description', 'image', 'category', 'price', 'is_published']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        user = kwargs.get('user')
+        if user and not user.has_perm('catalog.can_unpublish_product'):
+            # Скрываем поле is_published для обычных пользователей
+            self.fields.pop('is_published', None)

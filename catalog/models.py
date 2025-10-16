@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 
 
 class Category(models.Model):
@@ -14,6 +15,7 @@ class Category(models.Model):
 
 
 class Product(models.Model):
+    # Существующие поля
     name = models.CharField(max_length=100, verbose_name='Наименование')
     description = models.TextField(verbose_name='Описание', blank=True, null=True)
     image = models.ImageField(upload_to='products/', verbose_name='Изображение', blank=True, null=True)
@@ -22,10 +24,26 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='Дата последнего изменения')
 
+    # НОВЫЕ ПОЛЯ согласно критериям
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        verbose_name='Владелец',
+        blank=True,
+        null=True
+    )
+    is_published = models.BooleanField(default=False, verbose_name='Опубликовано')
+
     class Meta:
         verbose_name = 'Продукт'
         verbose_name_plural = 'Продукты'
         ordering = ['-created_at']
+        # НОВЫЕ ПРАВА согласно критериям
+        permissions = [
+            ("can_unpublish_product", "Может отменять публикацию продукта"),
+            ("can_change_description", "Может изменять описание продукта"),
+            ("can_change_category", "Может изменять категорию продукта"),
+        ]
 
     def __str__(self):
         return f"{self.name} - {self.price} руб."

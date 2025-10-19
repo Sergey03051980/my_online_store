@@ -39,12 +39,25 @@
 
             <div class="mb-3">
                 <span class="badge bg-secondary">{{ product.category.name }}</span>
+                <!-- Статус публикации -->
+                {% if product.is_published %}
+                    <span class="badge bg-success">Опубликовано</span>
+                {% else %}
+                    <span class="badge bg-warning">Черновик</span>
+                {% endif %}
             </div>
 
             <div class="mb-4">
                 <h5>Описание:</h5>
                 <p class="lead">{{ product.description }}</p>
             </div>
+
+            <!-- Информация о владельце -->
+            {% if product.owner %}
+            <div class="mb-3">
+                <small class="text-muted">Владелец: {{ product.owner.email }}</small>
+            </div>
+            {% endif %}
 
             <!-- Даты создания и обновления -->
             <div class="text-muted small mb-4">
@@ -54,11 +67,28 @@
                 {% endif %}
             </div>
 
-            <!-- Кнопки действий -->
+            <!-- Кнопки действий с проверкой прав -->
             <div class="d-flex gap-2 flex-wrap">
                 <a href="{% url 'catalog:home' %}" class="btn btn-secondary">← Назад к товарам</a>
+                
+                <!-- Редактирование: только владелец -->
+                {% if user == product.owner %}
                 <a href="{% url 'catalog:product_update' product.pk %}" class="btn btn-warning">✏️ Редактировать</a>
+                {% endif %}
+                
+                <!-- Удаление: владелец ИЛИ модератор -->
+                {% if user == product.owner or perms.catalog.delete_product %}
                 <a href="{% url 'catalog:product_delete' product.pk %}" class="btn btn-danger">🗑️ Удалить</a>
+                {% endif %}
+                
+                <!-- Отмена публикации: только модератор -->
+                {% if perms.catalog.can_unpublish_product and product.is_published %}
+                <form method="post" action="{% url 'catalog:product_unpublish' product.pk %}" class="d-inline">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-warning">🚫 Снять с публикации</button>
+                </form>
+                {% endif %}
+                
                 <button class="btn btn-success">🛒 Добавить в корзину</button>
             </div>
         </div>
@@ -76,10 +106,19 @@
                         <div class="col-md-6">
                             <p><strong>Категория:</strong> {{ product.category.name }}</p>
                             <p><strong>Артикул:</strong> #{{ product.pk }}</p>
+                            {% if product.owner %}
+                            <p><strong>Владелец:</strong> {{ product.owner.email }}</p>
+                            {% endif %}
                         </div>
                         <div class="col-md-6">
                             <p><strong>Дата добавления:</strong> {{ product.created_at|date:"d.m.Y" }}</p>
-                            <p><strong>Статус:</strong> В наличии</p>
+                            <p><strong>Статус:</strong> 
+                                {% if product.is_published %}
+                                    <span class="text-success">Опубликовано</span>
+                                {% else %}
+                                    <span class="text-warning">Черновик</span>
+                                {% endif %}
+                            </p>
                         </div>
                     </div>
                 </div>
